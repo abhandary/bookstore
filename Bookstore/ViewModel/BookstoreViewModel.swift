@@ -34,9 +34,9 @@ class BookstoreViewModel: ObservableObject {
             do {
                 let booksMap = try JSONDecoder().decode([String: [Book]].self, from: data)
                 if let books = booksMap["books"] {
-                    // safe to update on a background thread here, the UI update will still happen
-                    // on the main thread.
-                    self.books = books
+                    DispatchQueue.main.async {
+                        self.books = books
+                    }
                 }
             } catch {
                 print(error.localizedDescription)
